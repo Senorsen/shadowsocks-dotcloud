@@ -19,8 +19,10 @@
 # SOFTWARE.
 
 
+config = require("./config.json")
 net = require("net")
-http = require("http")
+# use https or http, determined by config
+http = require(if config.https then'https' else 'http')
 fs = require("fs")
 path = require("path")
 util = require('util')
@@ -44,8 +46,6 @@ inetAton = (ipStr) ->
       i++
     buf
 
-configContent = fs.readFileSync(path.resolve(__dirname, "config.json"))
-config = JSON.parse(configContent)
 configFromArgs = args.parseArgs()
 for k, v of configFromArgs
   config[k] = v
